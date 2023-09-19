@@ -1,0 +1,147 @@
+openapi: "3.0.0"
+info:
+  title: Faculty of Computing and Informatics 
+  description: This API provides functionalities for managing staff, their offices, and allocated courses within the Faculty of Computing and Informatics.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/vle/api/v1
+
+paths:
+  /lecturers:
+    get:
+      summary: Retrieve a list of all lecturers within the faculty.
+      responses:
+        '200':
+          description: A JSON array of lecturer objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+    post:
+      summary: Add a new lecturer.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+      responses:
+        '201':
+          description: The lecturer was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+        '400':
+          description: The request body is invalid.
+  /lecturers/{staffNumber}:
+    get:
+      summary: Retrieve the details of a specific lecturer by their staff number.
+      parameters:
+        - name: staffNumber
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The lecturer object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+        '404':
+          description: The lecturer with the specified staff number does not exist.
+    put:
+      summary: Update an existing lecturer's information.
+      parameters:
+        - name: staffNumber
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+      responses:
+        '200':
+          description: The lecturer was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+        '400':
+          description: The request body is invalid.
+        '404':
+          description: The lecturer with the specified staff number does not exist.
+    delete:
+      summary: Delete a lecturer's record by their staff number.
+      parameters:
+        - name: staffNumber
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: The lecturer was successfully deleted.
+        '404':
+          description: The lecturer with the specified staff number does not exist.
+  /courses/{courseCode}/lecturers:
+    get:
+      summary: Retrieve all the lecturers that teach a certain course.
+      parameters:
+        - name: courseCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON array of lecturer objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+        '404':
+          description: The course with the specified course code does not exist.
+  /offices/{officeNumber}/lecturers:
+    get:
+      summary: Retrieve all the lecturers that sit in the same office.
+      parameters:
+        - name: officeNumber
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A JSON array of lecturer objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+        '404':
+          description: The office with the specified office number does not exist.
+components:
+  schemas:
+    Lecturer:
+      type: object
+      properties:
+        staffNumber:
+          type: integer
+        officeNumber:
+          type: integer
+        staffName:
+          type: string
+      required:
+        - staffNumber
+        - officeNumber
+        - staffName
