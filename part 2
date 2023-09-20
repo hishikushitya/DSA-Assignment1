@@ -1,0 +1,54 @@
+```proto
+syntax = "proto3";
+message Book {
+ string isbn = 1;
+ string title = 2;
+ string author_1 = 3;
+ string author_2 = 4;
+ string location = 5;
+ bool is_available = 6;
+}
+message User {
+ string user_id = 1;
+ string user_type = 2;
+}
+service LibraryService {
+ rpc AddBook(Book) returns (string);
+ rpc CreateUsers(stream User) returns (string);
+ rpc UpdateBook(Book) returns (string);
+ rpc RemoveBook(string) returns (repeated Book);
+ rpc ListAvailableBooks(User) returns (repeated Book);
+ rpc LocateBook(string) returns (string);
+ rpc BorrowBook(User) returns (string);
+}
+```
+```bash
+ballerina grpc --input library.proto --output generated
+```
+This command generates the client and server stubs.
+```ballerina
+import ballerina/grpc;
+import ballerina/log;
+service<grpc:Service> libraryService = {
+ // Implement AddBook, CreateUsers, UpdateBook, RemoveBook, etc. gRPC methods here.
+};
+function main(string... args) {
+ grpc:Listener listener = new (8080);
+ var serverEp = new grpc:Server(listener, serviceObj=libraryService);
+ var startResult = serverEp.start();
+ if (startResult is error) {
+ log:printError("Error starting the gRPC server: " + startResult.toString());
+ } else {
+ log:print("gRPC server started on port 8080");
+ }
+ listener.stop();
+}
+```
+```ballerina
+import ballerina/grpc;
+function main(string... args) {
+ grpc:Client libraryClient = new("http://localhost:8080/libraryService");
+ // Implement client logic to call AddBook, CreateUsers, ListAvailableBooks, etc.
+ libraryClient.stop();
+}
+```
