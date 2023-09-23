@@ -2,16 +2,24 @@ syntax = "proto3";
 
 package library;
 
+// Define a gRPC service named LibraryService
 service LibraryService {
+    // RPC method to add a book, takes a Book message and returns a BookISBN
     rpc AddBook (Book) returns (BookISBN);
+    // RPC method to create users, streams User messages, and returns a Response
     rpc CreateUsers (stream User) returns (Response);
+    // RPC method to update a book, takes a Book message, and returns a Book
     rpc UpdateBook (Book) returns (Book);
+    // RPC method to remove a book, takes a BookISBN message, and returns a BookList
     rpc RemoveBook (BookISBN) returns (BookList);
+    // RPC method to list available books, takes an Empty message, and returns a BookList
     rpc ListAvailableBooks (Empty) returns (BookList);
+    // RPC method to locate a book by ISBN, takes a BookISBN message, and returns a BookLocation
     rpc LocateBook (BookISBN) returns (BookLocation);
+    // RPC method to borrow a book, takes a BorrowRequest message, and returns a Response
     rpc BorrowBook (BorrowRequest) returns (Response);
 }
-
+// Define a message type named Book
 message Book {
     string title = 1;
     string author_1 = 2;
@@ -21,30 +29,37 @@ message Book {
     bool status = 6;
 }
 
+// Define a message type named User
 message User {
     int32 user_id = 1;
     string user_type = 2;
 }
 
+// Define a message type named BookISBN
 message BookISBN {
     string isbn = 1;
 }
 
+// Define a message type named BookList
 message BookList {
     repeated Book books = 1;
 }
 
+// Define an empty message named Empty
 message Empty {}
 
+// Define a message type named BookLocation
 message BookLocation {
     string location = 1;
 }
 
+// Define a message type named BorrowRequest
 message BorrowRequest {
     int32 user_id = 1;
     string isbn = 2;
 }
 
+// Define a message type named Response
 message Response {
     string message = 1;
 }
