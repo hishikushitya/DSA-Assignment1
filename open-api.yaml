@@ -1,3 +1,19 @@
+# Commit Message:
+# Define OpenAPI Specification for Faculty of Computing and Informatics API
+
+# This commit introduces the OpenAPI specification for the Faculty of Computing and Informatics API. 
+# The specification defines endpoints and operations related to managing staff, their offices, and allocated courses within the faculty. 
+# It includes paths for retrieving lecturers, adding new lecturers, updating lecturer information, deleting lecturers, 
+# and retrieving lecturers by specific criteria (e.g., staff number, course code, office number).
+
+# Changes Made:
+# - Defined OpenAPI version, title, description, and version.
+# - Specified server URL.
+# - Defined paths with HTTP methods (GET, POST, PUT, DELETE) and corresponding summaries and responses.
+# - Specified request and response schemas using components/schemas.
+# - Defined the 'Lecturer' schema with required properties.
+
+
 openapi: "3.0.0"
 info:
   title: Faculty of Computing and Informatics 
